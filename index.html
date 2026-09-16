@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>State Trace Animator</title><link rel="stylesheet" href="style.css"></head>
+<body><main><header><p class="eyebrow">offline tool</p><h1>State Trace Animator</h1><p>Build a tiny deterministic machine, then play its event trace.</p></header>
+<section class="controls" aria-label="Machine controls"><label>States <input id="states" value="idle, loading, success, error"></label><label>Transitions <textarea id="transitions" rows="5">idle, FETCH, loading
+loading, RESOLVE, success
+loading, REJECT, error
+error, RETRY, loading
+success, RESET, idle</textarea></label><label>Events <input id="events" value="FETCH, RESOLVE, RESET, UNKNOWN"></label><div><button id="build">Build machine</button><button id="play" disabled>Play trace</button><button id="reset" disabled>Reset</button><button id="export" disabled>Export JSON</button></div></section>
+<section aria-live="polite"><h2 id="status">Build a machine to begin.</h2><ol id="trace"></ol></section><p class="hint">Keyboard: <kbd>B</kbd> build, <kbd>P</kbd> play, <kbd>R</kbd> reset.</p></main><script src="machine.js"></script><script src="app.js"></script></body></html>

@@ -1,0 +1,27 @@
+name: state-trace-animator
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    expose: ["3000"]
+    networks: [proxy]
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.state-trace-animator.rule=Host(`state-trace-animator.ichabod-crane.net`)"
+      - traefik.http.routers.state-trace-animator.entrypoints=websecure
+      - traefik.http.routers.state-trace-animator.tls.certresolver=letsencrypt
+      - traefik.http.services.state-trace-animator.loadbalancer.server.port=3000
+    cpus: "0.50"
+    mem_limit: 64m
+    pids_limit: 256
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      options: {max-size: 10m, max-file: "3"}
+networks:
+  proxy:
+    external: true
+    name: ichabod-proxy

@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const {createMachine} = require('../machine.js');
+const machine=createMachine(['idle','loading','success','error'],[{from:'idle',event:'FETCH',to:'loading'},{from:'loading',event:'RESOLVE',to:'success'},{from:'success',event:'RESET',to:'idle'}]);
+assert.equal(machine.initial,'idle');
+let step=machine.dispatch('idle','FETCH'); assert.deepEqual(step,{state:'loading',valid:true});
+step=machine.dispatch(step.state,'RESOLVE'); assert.deepEqual(step,{state:'success',valid:true});
+assert.deepEqual(machine.dispatch('success','UNKNOWN'),{state:'success',valid:false});
+assert.deepEqual(machine.dispatch('success','RESET'),{state:'idle',valid:true});
+assert.deepEqual(JSON.parse(JSON.stringify({states:machine.states,transitions:machine.transitions})).states,machine.states);
+console.log('machine test passed');
